@@ -1,5 +1,9 @@
 import React, { Component } from 'react';
 import Layout from './components/Layout';
+import Section from './components/Section';
+import FeedbackControls from './components/FeedbackControls';
+import Statistics from './components/Statistics';
+import Notification from './components/Notification';
 
 class App extends Component {
   state = {
@@ -7,8 +11,52 @@ class App extends Component {
     neutral: 0,
     bad: 0,
   };
+
+  addFeedback = label => {
+    if (label === 'good')
+      this.setState(prevState => ({ good: prevState.good + 1 }));
+    if (label === 'neutral')
+      this.setState(prevState => ({ neutral: prevState.neutral + 1 }));
+    if (label === 'bad')
+      this.setState(prevState => ({ bad: prevState.bad + 1 }));
+  };
+
+  countTotalFeedback = () => {
+    const { good, neutral, bad } = this.state;
+    return good + neutral + bad;
+  };
+
+  countPositiveFeedbackPercentage = () => {
+    const { good, neutral, bad } = this.state;
+    const positive = good / (good + neutral + bad);
+    return positive && Math.round(positive * 100);
+  };
+
   render() {
-    return <Layout></Layout>;
+    const { good, neutral, bad } = this.state;
+    const total = this.countTotalFeedback();
+    const positive = this.countPositiveFeedbackPercentage();
+    return (
+      <Layout>
+        <Section title="Please leave us feedback">
+          <FeedbackControls onLeaveFeedback={this.addFeedback} />
+        </Section>
+
+        <Section title="Statistics">
+          {total > 0 ? (
+            <Statistics
+              good={good}
+              neutral={neutral}
+              bad={bad}
+              total={total}
+              positive={positive}
+            />
+          ) : (
+            <Notification message="No feedback given" />
+          )}
+        </Section>
+      </Layout>
+    );
   }
 }
 
