@@ -13,12 +13,7 @@ class App extends Component {
   };
 
   addFeedback = label => {
-    if (label === 'good')
-      this.setState(prevState => ({ good: prevState.good + 1 }));
-    if (label === 'neutral')
-      this.setState(prevState => ({ neutral: prevState.neutral + 1 }));
-    if (label === 'bad')
-      this.setState(prevState => ({ bad: prevState.bad + 1 }));
+    this.setState(prevState => ({ [label]: prevState[label] + 1 }));
   };
 
   countTotalFeedback = () => {
