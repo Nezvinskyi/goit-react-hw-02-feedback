@@ -34,7 +34,10 @@ class App extends Component {
     return (
       <Layout>
         <Section title="Please leave us feedback">
-          <FeedbackControls onLeaveFeedback={this.addFeedback} />
+          <FeedbackControls
+            options={['good', 'neutral', 'bad']}
+            onLeaveFeedback={this.addFeedback}
+          />
         </Section>
 
         <Section title="Statistics">
